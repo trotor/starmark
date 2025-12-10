@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starmark</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>⭐ Starmark</h1>
+      <button id="settingsBtn" class="btn-icon" title="Settings">⚙️</button>
+    </header>
+
+    <!-- Main View -->
+    <div id="mainView" class="view">
+      <!-- Status -->
+      <div id="apiStatus" class="status-bar status-warning">
+        <span>⚠️ API key not configured</span>
+        <button id="configureApi" class="btn-link">Configure</button>
+      </div>
+
+      <!-- Actions -->
+      <section class="actions-section">
+        <button id="classifyCurrentBtn" class="btn-primary btn-full">
+          <span class="btn-icon-left">🏷️</span>
+          Classify Current Page
+        </button>
+        <button id="reviewAllBtn" class="btn-secondary btn-full">
+          <span class="btn-icon-left">📚</span>
+          Review All Bookmarks
+        </button>
+      </section>
+
+      <!-- Auto-classify toggle -->
+      <section class="toggle-section">
+        <label class="toggle-label">
+          <input type="checkbox" id="autoClassifyToggle">
+          <span class="toggle-text">Auto-classify new bookmarks</span>
+        </label>
+      </section>
+
+      <!-- Undo section -->
+      <section id="undoSection" class="undo-section hidden">
+        <div class="undo-info">
+          <span id="undoCount">0</span> changes this session
+        </div>
+        <div class="undo-actions">
+          <button id="undoLastBtn" class="btn-small">Undo Last</button>
+          <button id="undoAllBtn" class="btn-small">Undo All</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Classification Result View -->
+    <div id="resultView" class="view hidden">
+      <div class="result-header">
+        <button id="backFromResult" class="btn-back">← Back</button>
+        <h2>Classification Result</h2>
+      </div>
+      <div class="result-content">
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-url" id="resultUrl"></div>
+        <div class="result-suggestion">
+          <label>Suggested folder:</label>
+          <select id="resultFolder"></select>
+        </div>
+        <div class="result-confidence">
+          <span>Confidence: </span>
+          <span id="resultConfidence" class="confidence-badge">0%</span>
+        </div>
+        <div class="result-reason" id="resultReason"></div>
+        <div class="result-actions">
+          <button id="saveBookmarkBtn" class="btn-primary">Save to Folder</button>
+          <button id="skipResultBtn" class="btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Mode View -->
+    <div id="reviewView" class="view hidden">
+      <div class="review-header">
+        <button id="stopReview" class="btn-back">← Stop</button>
+        <h2>Review Bookmarks</h2>
+      </div>
+
+      <div class="review-progress">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-text">
+          <span id="reviewCurrent">0</span> / <span id="reviewTotal">0</span>
+        </div>
+      </div>
+
+      <div id="reviewContent" class="review-content">
+        <div class="bookmark-title" id="reviewTitle"></div>
+        <div class="bookmark-url" id="reviewUrl"></div>
+
+        <div class="review-suggestion">
+          <label>Move to:</label>
+          <select id="reviewFolder"></select>
+        </div>
+
+        <div class="review-confidence">
+          <span>Confidence: </span>
+          <span id="reviewConfidence" class="confidence-badge">0%</span>
+        </div>
+
+        <div class="review-reason" id="reviewReason"></div>
+      </div>
+
+      <div id="reviewLoading" class="review-loading hidden">
+        <div class="spinner"></div>
+        <span>Analyzing bookmark...</span>
+      </div>
+
+      <div class="review-actions">
+        <button id="skipBtn" class="btn-secondary" title="Press S">Skip</button>
+        <button id="acceptBtn" class="btn-primary" title="Press Enter">Accept</button>
+      </div>
+
+      <div class="review-stats">
+        <span>✓ <span id="statsAccepted">0</span> accepted</span>
+        <span>○ <span id="statsSkipped">0</span> skipped</span>
+      </div>
+
+      <div class="review-shortcuts">
+        <kbd>Enter</kbd> Accept &nbsp; <kbd>S</kbd> Skip &nbsp; <kbd>Esc</kbd> Stop
+      </div>
+    </div>
+
+    <!-- Loading View -->
+    <div id="loadingView" class="view hidden">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <span id="loadingText">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Error View -->
+    <div id="errorView" class="view hidden">
+      <div class="error-content">
+        <span class="error-icon">❌</span>
+        <p id="errorMessage"></p>
+        <button id="errorBackBtn" class="btn-secondary">Go Back</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
