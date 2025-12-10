@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Starmark",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "AI-powered bookmark organizer that automatically categorizes your bookmarks using OpenAI",
   "permissions": [
     "bookmarks",
