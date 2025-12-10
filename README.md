@@ -4,6 +4,12 @@
 
 Starmark uses OpenAI to automatically categorize and organize your bookmarks. Stop manually sorting through hundreds of bookmarks - let AI do the heavy lifting while you stay in control.
 
+<p align="center">
+  <img src="docs/images/main-view.png" alt="Starmark main interface" width="320">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/images/classify-result.png" alt="Classification result" width="320">
+</p>
+
 ---
 
 ## Why Starmark?
