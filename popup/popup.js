@@ -274,6 +274,7 @@ async function classifyCurrentPage() {
     }
 
     state.currentClassification = response;
+    await updateTokenUsage(); // Update tokens after API call
     showClassificationResult(response);
   } catch (error) {
     showError(error.message);
