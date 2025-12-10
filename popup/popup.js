@@ -80,8 +80,11 @@ let state = {
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
+  console.log('[Starmark Popup] Initializing...');
+
   // Set version from manifest
   const manifest = chrome.runtime.getManifest();
+  console.log('[Starmark Popup] Manifest version:', manifest.version);
   elements.versionInfo.textContent = `v${manifest.version}`;
 
   await loadSettings();
@@ -90,6 +93,8 @@ async function init() {
   await updateUndoCount();
   setupEventListeners();
   setupKeyboardShortcuts();
+
+  console.log('[Starmark Popup] Initialization complete');
 }
 
 // Load settings from background
@@ -148,7 +153,9 @@ async function updateUndoCount() {
 async function updateTokenUsage() {
   try {
     const response = await chrome.runtime.sendMessage({ type: 'GET_TOKEN_USAGE' });
-    const total = response.total || 0;
+    console.log('[Starmark Popup] Token usage response:', JSON.stringify(response));
+    const total = response?.total || 0;
+    console.log('[Starmark Popup] Setting token count to:', total);
     elements.tokenCount.textContent = total.toLocaleString();
   } catch (error) {
     console.error('Failed to get token usage:', error);
