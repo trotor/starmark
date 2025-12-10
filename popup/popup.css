@@ -504,13 +504,9 @@ header h1 {
 
 /* Token Usage Footer */
 .token-footer {
-  margin-top: 12px;
-  padding-top: 8px;
+  padding: 6px 12px;
   border-top: 1px solid #eee;
-}
-
-.token-footer.hidden {
-  display: none;
+  background: #fafafa;
 }
 
 .token-info {

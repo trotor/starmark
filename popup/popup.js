@@ -146,12 +146,6 @@ async function updateTokenUsage() {
     const response = await chrome.runtime.sendMessage({ type: 'GET_TOKEN_USAGE' });
     const total = response.total || 0;
     elements.tokenCount.textContent = total.toLocaleString();
-
-    if (total > 0) {
-      elements.tokenFooter.classList.remove('hidden');
-    } else {
-      elements.tokenFooter.classList.add('hidden');
-    }
   } catch (error) {
     console.error('Failed to get token usage:', error);
   }
