@@ -103,10 +103,10 @@ async function handleMessage(request, sender) {
       return { count: undoHistory.length };
 
     case 'GET_TOKEN_USAGE':
-      return openai.getTokenUsage();
+      return await openai.getTokenUsage();
 
     case 'RESET_TOKEN_USAGE':
-      openai.resetTokenUsage();
+      await openai.resetTokenUsage();
       return { success: true };
 
     case 'TEST_API':

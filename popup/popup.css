@@ -502,17 +502,25 @@ header h1 {
   font-size: 13px;
 }
 
-/* Token Usage Footer */
-.token-footer {
+/* App Footer */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 6px 12px;
   border-top: 1px solid #eee;
   background: #fafafa;
 }
 
+.version-info {
+  font-size: 10px;
+  color: #aaa;
+  font-family: monospace;
+}
+
 .token-info {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 4px;
   font-size: 11px;
   color: #888;

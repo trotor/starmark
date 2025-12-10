@@ -56,8 +56,8 @@ const elements = {
   errorMessage: document.getElementById('errorMessage'),
   errorBackBtn: document.getElementById('errorBackBtn'),
 
-  // Token footer
-  tokenFooter: document.getElementById('tokenFooter'),
+  // Footer
+  versionInfo: document.getElementById('versionInfo'),
   tokenCount: document.getElementById('tokenCount')
 };
 
@@ -80,6 +80,10 @@ let state = {
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
+  // Set version from manifest
+  const manifest = chrome.runtime.getManifest();
+  elements.versionInfo.textContent = `v${manifest.version}`;
+
   await loadSettings();
   await loadFolders();
   await updateTokenUsage();
