@@ -54,7 +54,11 @@ const elements = {
   // Loading & Error
   loadingText: document.getElementById('loadingText'),
   errorMessage: document.getElementById('errorMessage'),
-  errorBackBtn: document.getElementById('errorBackBtn')
+  errorBackBtn: document.getElementById('errorBackBtn'),
+
+  // Token footer
+  tokenFooter: document.getElementById('tokenFooter'),
+  tokenCount: document.getElementById('tokenCount')
 };
 
 // State
@@ -78,6 +82,7 @@ document.addEventListener('DOMContentLoaded', init);
 async function init() {
   await loadSettings();
   await loadFolders();
+  await updateTokenUsage();
   await updateUndoCount();
   setupEventListeners();
   setupKeyboardShortcuts();
@@ -132,6 +137,23 @@ async function updateUndoCount() {
     }
   } catch (error) {
     console.error('Failed to get undo count:', error);
+  }
+}
+
+// Update token usage display
+async function updateTokenUsage() {
+  try {
+    const response = await chrome.runtime.sendMessage({ type: 'GET_TOKEN_USAGE' });
+    const total = response.total || 0;
+    elements.tokenCount.textContent = total.toLocaleString();
+
+    if (total > 0) {
+      elements.tokenFooter.classList.remove('hidden');
+    } else {
+      elements.tokenFooter.classList.add('hidden');
+    }
+  } catch (error) {
+    console.error('Failed to get token usage:', error);
   }
 }
 
@@ -196,9 +218,11 @@ function showView(viewName) {
     case 'main':
       elements.mainView.classList.remove('hidden');
       updateUndoCount();
+      updateTokenUsage();
       break;
     case 'result':
       elements.resultView.classList.remove('hidden');
+      updateTokenUsage();
       break;
     case 'review':
       elements.reviewView.classList.remove('hidden');
@@ -409,6 +433,9 @@ function showReviewItem(bookmark, classification) {
 
   // Set reason
   elements.reviewReason.textContent = classification.reason || 'No explanation provided';
+
+  // Update token usage after each classification
+  updateTokenUsage();
 
   // Show content, hide loading
   elements.reviewLoading.classList.add('hidden');

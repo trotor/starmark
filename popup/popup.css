@@ -502,6 +502,36 @@ header h1 {
   font-size: 13px;
 }
 
+/* Token Usage Footer */
+.token-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+.token-footer.hidden {
+  display: none;
+}
+
+.token-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 11px;
+  color: #888;
+  cursor: default;
+}
+
+.token-icon {
+  font-size: 12px;
+}
+
+#tokenCount {
+  font-weight: 500;
+  font-family: monospace;
+}
+
 .hidden {
   display: none !important;
 }
