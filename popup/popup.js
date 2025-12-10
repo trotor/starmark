@@ -14,6 +14,7 @@ const elements = {
   configureApi: document.getElementById('configureApi'),
   settingsBtn: document.getElementById('settingsBtn'),
   classifyCurrentBtn: document.getElementById('classifyCurrentBtn'),
+  quickReviewBtn: document.getElementById('quickReviewBtn'),
   reviewAllBtn: document.getElementById('reviewAllBtn'),
   autoClassifyToggle: document.getElementById('autoClassifyToggle'),
   undoSection: document.getElementById('undoSection'),
@@ -33,6 +34,8 @@ const elements = {
 
   // Review view
   stopReview: document.getElementById('stopReview'),
+  reviewTitle2: document.getElementById('reviewTitle2'),
+  reviewModeBadge: document.getElementById('reviewModeBadge'),
   progressFill: document.getElementById('progressFill'),
   reviewCurrent: document.getElementById('reviewCurrent'),
   reviewTotal: document.getElementById('reviewTotal'),
@@ -64,7 +67,8 @@ let state = {
     currentIndex: 0,
     accepted: 0,
     skipped: 0,
-    active: false
+    active: false,
+    isQuick: false // Quick review mode flag
   }
 };
 
@@ -89,10 +93,12 @@ async function loadSettings() {
     if (state.settings?.apiKey) {
       elements.apiStatus.classList.add('hidden');
       elements.classifyCurrentBtn.disabled = false;
+      elements.quickReviewBtn.disabled = false;
       elements.reviewAllBtn.disabled = false;
     } else {
       elements.apiStatus.classList.remove('hidden');
       elements.classifyCurrentBtn.disabled = true;
+      elements.quickReviewBtn.disabled = true;
       elements.reviewAllBtn.disabled = true;
     }
 
@@ -137,7 +143,8 @@ function setupEventListeners() {
 
   // Main actions
   elements.classifyCurrentBtn.addEventListener('click', classifyCurrentPage);
-  elements.reviewAllBtn.addEventListener('click', startReviewMode);
+  elements.quickReviewBtn.addEventListener('click', () => startReviewMode(true));
+  elements.reviewAllBtn.addEventListener('click', () => startReviewMode(false));
   elements.autoClassifyToggle.addEventListener('change', toggleAutoClassify);
 
   // Undo
@@ -296,8 +303,8 @@ async function saveClassification() {
   }
 }
 
-// Start review mode
-async function startReviewMode() {
+// Start review mode (quick or deep)
+async function startReviewMode(isQuick = false) {
   showLoading('Loading bookmarks...');
 
   try {
@@ -313,8 +320,20 @@ async function startReviewMode() {
       currentIndex: 0,
       accepted: 0,
       skipped: 0,
-      active: true
+      active: true,
+      isQuick: isQuick
     };
+
+    // Update UI for quick vs deep mode
+    if (isQuick) {
+      elements.reviewTitle2.textContent = 'Quick Review';
+      elements.reviewModeBadge.textContent = 'URL only';
+      elements.reviewModeBadge.className = 'mode-badge quick';
+    } else {
+      elements.reviewTitle2.textContent = 'Deep Review';
+      elements.reviewModeBadge.textContent = 'Full analysis';
+      elements.reviewModeBadge.className = 'mode-badge deep';
+    }
 
     elements.reviewTotal.textContent = response.bookmarks.length;
     updateReviewStats();
@@ -328,7 +347,7 @@ async function startReviewMode() {
 
 // Classify next bookmark in queue
 async function classifyNextBookmark() {
-  const { bookmarks, currentIndex } = state.reviewMode;
+  const { bookmarks, currentIndex, isQuick } = state.reviewMode;
 
   if (currentIndex >= bookmarks.length) {
     // Done!
@@ -348,8 +367,11 @@ async function classifyNextBookmark() {
   elements.reviewLoading.classList.remove('hidden');
 
   try {
+    // Use quick or deep classification based on mode
+    const messageType = isQuick ? 'QUICK_CLASSIFY_BOOKMARK' : 'CLASSIFY_BOOKMARK';
+
     const response = await chrome.runtime.sendMessage({
-      type: 'CLASSIFY_BOOKMARK',
+      type: messageType,
       bookmark
     });
 

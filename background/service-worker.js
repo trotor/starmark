@@ -81,6 +81,9 @@ async function handleMessage(request, sender) {
     case 'CLASSIFY_BOOKMARK':
       return await classifyBookmark(request.bookmark);
 
+    case 'QUICK_CLASSIFY_BOOKMARK':
+      return await quickClassifyBookmark(request.bookmark);
+
     case 'GET_ALL_BOOKMARKS':
       return await getAllBookmarks();
 
@@ -152,7 +155,36 @@ async function classifyPage(tabId) {
   };
 }
 
-// Classify a specific bookmark
+// Quick classify a bookmark (URL and title only - no page fetch)
+async function quickClassifyBookmark(bookmark) {
+  // Use only URL and title - no page fetching
+  const pageContent = {
+    url: bookmark.url,
+    title: bookmark.title,
+    description: '',
+    keywords: '',
+    headings: [],
+    mainContent: ''
+  };
+
+  // Get available categories
+  const categories = await getCategories();
+
+  if (categories.length === 0) {
+    throw new Error('No categories available');
+  }
+
+  // Classify with OpenAI using quick mode
+  const result = await openai.quickClassifyBookmark(pageContent, categories);
+
+  return {
+    ...result,
+    bookmarkId: bookmark.id,
+    bookmarkTitle: bookmark.title
+  };
+}
+
+// Classify a specific bookmark (deep - fetches page content)
 async function classifyBookmark(bookmark) {
   // Fetch page content
   let pageContent = {

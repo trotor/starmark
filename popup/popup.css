@@ -87,8 +87,43 @@ header h1 {
   background: #e8e8e8;
 }
 
+.btn-secondary:disabled,
+.btn-tertiary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-tertiary {
+  background: white;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-tertiary:hover {
+  background: #f5f5f5;
+}
+
 .btn-full {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-badge {
+  font-size: 10px;
+  font-weight: normal;
+  background: rgba(0,0,0,0.1);
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 4px;
 }
 
 .btn-small {
@@ -226,6 +261,26 @@ header h1 {
 .review-header h2 {
   font-size: 14px;
   font-weight: 600;
+  flex: 1;
+}
+
+.mode-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+.mode-badge.quick {
+  background: #fef3e0;
+  color: #e65100;
+}
+
+.mode-badge.deep {
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
 .result-content {

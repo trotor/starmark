@@ -28,9 +28,15 @@
           <span class="btn-icon-left">🏷️</span>
           Classify Current Page
         </button>
-        <button id="reviewAllBtn" class="btn-secondary btn-full">
+        <button id="quickReviewBtn" class="btn-secondary btn-full">
+          <span class="btn-icon-left">⚡</span>
+          Quick Review
+          <span class="btn-badge">URL only</span>
+        </button>
+        <button id="reviewAllBtn" class="btn-tertiary btn-full">
           <span class="btn-icon-left">📚</span>
-          Review All Bookmarks
+          Deep Review
+          <span class="btn-badge">Full analysis</span>
         </button>
       </section>
 
@@ -83,7 +89,8 @@
     <div id="reviewView" class="view hidden">
       <div class="review-header">
         <button id="stopReview" class="btn-back">← Stop</button>
-        <h2>Review Bookmarks</h2>
+        <h2 id="reviewTitle2">Review Bookmarks</h2>
+        <span id="reviewModeBadge" class="mode-badge">Quick</span>
       </div>
 
       <div class="review-progress">
